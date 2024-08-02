@@ -16,7 +16,7 @@ This is an Instagram-like application built with NestJS, GraphQL, Postgres, and 
 
 ```bash
 git clone https://github.com/Nurudeeen/post-app.git
-cd instagram-like-app
+cd post-app
 ```
 
 ### Install Dependencies
