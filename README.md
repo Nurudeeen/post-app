@@ -54,6 +54,14 @@ npx prisma migrate dev
 npx prisma generate
 ```
 
+### Seed the Database (Optional)
+
+To populate the database with dummy data, run:
+
+```bash
+npm run seed
+```
+
 ### Start the Application
 
 ```bash
