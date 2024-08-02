@@ -1,73 +1,158 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+```markdown
+# Post-App
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is an Instagram-like application built with NestJS, GraphQL, Postgres, and Prisma. The app supports CRUD operations for posts with features similar to Instagram at a basic level.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Prerequisites
 
-## Description
+- Node.js (v14 or higher)
+- npm (v6 or higher)
+- Docker (for running Postgres)
+- Prisma CLI (`npm install -g prisma`)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Getting Started
 
-## Installation
+### Clone the Repository
 
 ```bash
-$ npm install
+git clone https://github.com/your-repo/instagram-like-app.git
+cd instagram-like-app
 ```
 
-## Running the app
+### Install Dependencies
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Test
+### Set Up Environment Variables
+
+Create a `.env` file in the root of the project with the following content:
+
+```plaintext
+DATABASE_URL="postgresql://username:password@localhost:5432/instagram"
+PORT=3000
+```
+
+Replace `username` and `password` with your Postgres credentials.
+
+### Run Postgres with Docker
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker run --name postgres -e POSTGRES_USER=username -e POSTGRES_PASSWORD=password -e POSTGRES_DB=instagram -p 5432:5432 -d postgres
 ```
 
-## Support
+### Run Prisma Migrations
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+npx prisma migrate dev
+```
 
-## Stay in touch
+### Generate Prisma Client
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+npx prisma generate
+```
+
+### Start the Application
+
+```bash
+npm run start:dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+### Access GraphQL Playground
+
+You can access the GraphQL Playground at `http://localhost:3000/graphql`.
+
+## Available Scripts
+
+- `npm run start`: Starts the application in production mode.
+- `npm run start:dev`: Starts the application in development mode.
+- `npm run build`: Builds the application.
+- `npm run lint`: Lints the application code.
+
+## GraphQL Queries and Mutations
+
+### Query Posts
+
+```graphql
+query {
+  posts {
+    id
+    title
+    content
+    imageUrl
+    likes
+    createdAt
+    updatedAt
+  }
+}
+```
+
+### Query Post by ID
+
+```graphql
+query {
+  post(id: "your-post-id") {
+    id
+    title
+    content
+    imageUrl
+    likes
+    createdAt
+    updatedAt
+  }
+}
+```
+
+### Create Post
+
+```graphql
+mutation {
+  createPost(createPostInput: { title: "Post Title", content: "Post content", imageUrl: "http://example.com/image.jpg" }) {
+    id
+    title
+    content
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}
+```
+
+### Update Post
+
+```graphql
+mutation {
+  updatePost(id: "your-post-id", updatePostInput: { title: "Updated Title", content: "Updated content" }) {
+    id
+    title
+    content
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}
+```
+
+### Delete Post
+
+```graphql
+mutation {
+  deletePost(id: "your-post-id") {
+    id
+    title
+    content
+    imageUrl
+    createdAt
+    updatedAt
+  }
+}
+```
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the MIT License.
+```

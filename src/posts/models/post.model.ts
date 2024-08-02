@@ -15,6 +15,9 @@ export class Post {
   imageUrl: string;
 
   @Field()
+  likes: number;
+
+  @Field()
   createdAt: Date;
 
   @Field()

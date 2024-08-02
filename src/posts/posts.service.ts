@@ -1,24 +1,22 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostInput } from './dto/create-post.input';
+import { UpdatePostInput } from './dto/update-post.input';
+import { Post } from '@prisma/client';
 
 @Injectable()
 export class PostsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreatePostInput) {
-    try {
-      return await this.prisma.post.create({ data });
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to create post');
-    }
+  async create(createPostInput: CreatePostInput): Promise<Post> {
+    return this.prisma.post.create({ data: createPostInput });
   }
 
-  async findAll() {
+  async findAll(): Promise<Post[]> {
     return this.prisma.post.findMany();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Post | null> {
     const post = await this.prisma.post.findUnique({ where: { id } });
     if (!post) {
       throw new NotFoundException(`Post with ID "${id}" not found`);
@@ -26,26 +24,22 @@ export class PostsService {
     return post;
   }
 
-  async update(id: string, data: CreatePostInput) {
-    const post = await this.findOne(id);
-    try {
-      return await this.prisma.post.update({
-        where: { id: post.id },
-        data,
-      });
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to update post');
+  async update(id: string, updatePostInput: UpdatePostInput): Promise<Post | null> {
+    const post = await this.prisma.post.findUnique({ where: { id } });
+    if (!post) {
+      throw new NotFoundException(`Post with ID "${id}" not found`);
     }
+    return this.prisma.post.update({
+      where: { id },
+      data: updatePostInput,
+    });
   }
 
-  async remove(id: string) {
-    const post = await this.findOne(id);
-    try {
-      return await this.prisma.post.delete({
-        where: { id: post.id },
-      });
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to delete post');
+  async remove(id: string): Promise<Post | null> {
+    const post = await this.prisma.post.findUnique({ where: { id } });
+    if (!post) {
+      throw new NotFoundException(`Post with ID "${id}" not found`);
     }
+    return this.prisma.post.delete({ where: { id } });
   }
 }

@@ -7,6 +7,7 @@ type Post {
   title: String!
   content: String!
   imageUrl: String!
+  likes: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -18,12 +19,12 @@ scalar DateTime
 
 type Query {
   posts: [Post!]!
-  post(id: String!): Post!
+  post(id: String!): Post
 }
 
 type Mutation {
-  createPost(createPost: CreatePostInput!): Post!
-  updatePost(id: String!, updatePost: CreatePostInput!): Post!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(id: String!, updatePostInput: UpdatePostInput!): Post!
   deletePost(id: String!): Post!
 }
 
@@ -31,4 +32,10 @@ input CreatePostInput {
   title: String!
   content: String!
   imageUrl: String!
+}
+
+input UpdatePostInput {
+  title: String
+  content: String
+  imageUrl: String
 }
