@@ -1,7 +1,8 @@
 ```markdown
 # Post-App
 
-This is an Instagram-like application built with NestJS, GraphQL, Postgres, and Prisma. The app supports CRUD operations for posts with features similar to Instagram at a basic level.
+This is an Instagram-like application built with NestJS, GraphQL, Postgres, and Prisma.
+The app supports CRUD operations for posts with features similar to Instagram at a basic level.
 
 ## Prerequisites
 
